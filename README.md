@@ -46,7 +46,6 @@ Giwth completely eliminates the regular expressions and uses the step definition
 A little explanation of the reasons behind Giwth can be found in this [blog](https://www.tbee.org/2023/02/19/given-when-then/).
 
 ## Step definitions
-
 The scenario requires implementations of specific interfaces, Given, When, Then, for each of the three phases.
 How you, the user of Giwth, create these implementations is up to you.
 All three interfaces even are identical, they all only have one method `Context run(Context context)`.
@@ -73,7 +72,6 @@ Scenario.of(...)
 Unlike Cucumber you cannot (accidentally) mix the step definitions, they are strongly typed.
 
 ## Context
-
 The step definitions are implemented by the user and somehow they need to have access to the environment they are executed in.
 This is done using a context.
 Things like repositories, access to browser control, etc. is provided through the context.
@@ -109,3 +107,7 @@ The context class can be manipulated by the steps, storing data for future refer
 
 A step receives a context as an argument but also needs to return it, this allows Context to be implemented as immutable.
 This is not a requirement, but Giwth enables the user to do so, if preferred.
+
+## Data Tables
+Giwth does not (yet?) have support for something like Cucumber data tables.
+Parameterized tests, as provided by the testing framework, or standard Java records and lists can be used to replace them.
