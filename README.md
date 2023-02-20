@@ -41,7 +41,7 @@ User.of("user").isLoggedin()
 
 So if this so closely resembles Cucumber, what is the added value? 
 Well, Cucumber has a few issues, and one of the most disturbing ones is that the regular expressions used to match sentences in the feature file to Java methods is a bit fragile.
-Also Cucumber does not clearly distinguish between step definitions for Given / When / Then, every thing needs to be done within these regular expressions.
+Also Cucumber does not clearly distinguish between step definitions for Given / When / Then, everything needs to be done with these regular expressions.
 Giwth completely eliminates the regular expressions and uses the step definitions directly in the scenario.
 A little explanation of the reasons behind Giwth can be found in this [blog](https://www.tbee.org/2023/02/19/given-when-then/).
 
@@ -52,7 +52,7 @@ All three interfaces even are identical, they all only have one method `Context 
 
 But as explained in the [blog](https://www.tbee.org/2023/02/19/given-when-then/), there is a suggestion; use builders.
 The builder focuses on a topic, provides some parameters for that topic, and then the resulting build method creates the actual step.
-Again an example says more than a 1000 word:
+Again an example says more than a 1000 words:
 
 ```java
 User.of("peter").isLoggedin(); // returns a Given
@@ -60,7 +60,7 @@ User.of("peter").logsIn(); // returns a When
 User.of("peter").shouldBeLoggedin(); // returns a Then
 ```
 
-So the only way this step builder can be used in a scenario is this:
+So the only way this specific step builder can be used in a scenario is this:
 
 ```java
 Scenario.of(...)
@@ -113,5 +113,5 @@ Giwth does not (yet?) have support for something like Cucumber data tables.
 Parameterized tests, as provided by the testing framework, or standard Java records and lists can be used to replace them.
 
 ## Sequence
-Like Cucumber Giwth allows the user to mix and match given, when and then; it does not enforce only three steps. 
+Like Cucumber, Giwth allows the user to mix and match given, when and then; it does not enforce only three steps. 
 The question of course is if it is wise to do that, but that is left to the discretion of the user. 
