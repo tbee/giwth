@@ -111,3 +111,7 @@ This is not a requirement, but Giwth enables the user to do so, if preferred.
 ## Data Tables
 Giwth does not (yet?) have support for something like Cucumber data tables.
 Parameterized tests, as provided by the testing framework, or standard Java records and lists can be used to replace them.
+
+## Sequence
+Like Cucumber Giwth allows the user to mix and match given, when and then; it does not enforce only three steps. 
+The question of course is if it is wise to do that, but that is left to the discretion of the user. 

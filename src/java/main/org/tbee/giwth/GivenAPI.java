@@ -1,7 +1,6 @@
 package org.tbee.giwth;
 
-public interface GivenAPI<Context> {
+public interface GivenAPI<Context> extends BaseAPI<Context> {
     GivenAPI<Context> and(Given<Context> given);
-
-    WhenAPI<Context> when(When<Context> when);
+    GivenAPI<Context> but(Given<Context> given);
 }
