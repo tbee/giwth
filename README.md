@@ -104,7 +104,8 @@ class User {
 }
 ```
 
-The context is also strongly typed: each step definition method specifies what class it expects as the argument, so it makes sense to use a single Context class for all tests.
+The context is also strongly typed: each step definition method specifies what class it expects as the argument, so it makes sense to use a single Context class for all tests to allow maximum reusability of the steps.
 The context class can be manipulated by the steps, storing data for future reference, or for use by other steps.
+
 A step receives a context as an argument but also needs to return it, this allows Context to be implemented as immutable.
 This is not a requirement, but Giwth enables the user to do so, if preferred.
