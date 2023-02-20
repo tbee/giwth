@@ -1,7 +1,6 @@
 package org.tbee.giwth.steps;
 
 import org.tbee.giwth.Given;
-import org.tbee.giwth.TestContext;
 import org.tbee.giwth.Then;
 import org.tbee.giwth.When;
 
@@ -11,27 +10,27 @@ public class SomeStep {
         return new SomeStep();
     }
 
-    public Given<TestContext> createGiven() {
-        return testContext -> {
-            testContext.numberOfStepsExecuted++;
-            testContext.numberOfGivenStepsExecuted++;
-            return testContext;
+    public Given<StepContext> createGiven() {
+        return stepContext -> {
+            stepContext.numberOfStepsExecuted++;
+            stepContext.numberOfGivenStepsExecuted++;
+            return stepContext;
         };
     }
 
-    public When<TestContext> createWhen() {
-        return testContext -> {
-            testContext.numberOfStepsExecuted++;
-            testContext.numberOfWhenStepsExecuted++;
-            return testContext;
+    public When<StepContext> createWhen() {
+        return stepContext -> {
+            stepContext.numberOfStepsExecuted++;
+            stepContext.numberOfWhenStepsExecuted++;
+            return stepContext;
         };
     }
 
-    public Then<TestContext> createThen() {
-        return testContext -> {
-            testContext.numberOfStepsExecuted++;
-            testContext.numberOfThenStepsExecuted++;
-            return testContext;
+    public Then<StepContext> createThen() {
+        return stepContext -> {
+            stepContext.numberOfStepsExecuted++;
+            stepContext.numberOfThenStepsExecuted++;
+            return stepContext;
         };
     }
 

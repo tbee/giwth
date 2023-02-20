@@ -1,6 +1,6 @@
-package org.tbee.giwth;
+package org.tbee.giwth.steps;
 
-public class TestContext {
+public class StepContext {
     public int numberOfStepsExecuted = 0;
     public int numberOfGivenStepsExecuted = 0;
     public int numberOfWhenStepsExecuted = 0;

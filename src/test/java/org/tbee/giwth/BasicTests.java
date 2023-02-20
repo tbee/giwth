@@ -3,59 +3,60 @@ package org.tbee.giwth;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.tbee.giwth.steps.SomeStep;
+import org.tbee.giwth.steps.StepContext;
 
 public class BasicTests {
 
     @Test
     public void fullGWT() {
 
-        TestContext testContext = new TestContext();
-        Scenario.of("keepItSimpleTest", testContext)
+        StepContext stepContext = new StepContext();
+        Scenario.of("keepItSimpleTest", stepContext)
                 .given(SomeStep.of().createGiven())
                 .when(SomeStep.of().createWhen())
                 .then(SomeStep.of().createThen());
 
-        Assertions.assertEquals(3, testContext.numberOfStepsExecuted);
-        Assertions.assertEquals(1, testContext.numberOfGivenStepsExecuted);
-        Assertions.assertEquals(1, testContext.numberOfWhenStepsExecuted);
-        Assertions.assertEquals(1, testContext.numberOfThenStepsExecuted);
+        Assertions.assertEquals(3, stepContext.numberOfStepsExecuted);
+        Assertions.assertEquals(1, stepContext.numberOfGivenStepsExecuted);
+        Assertions.assertEquals(1, stepContext.numberOfWhenStepsExecuted);
+        Assertions.assertEquals(1, stepContext.numberOfThenStepsExecuted);
     }
 
     @Test
     public void noGiven() {
 
-        TestContext testContext = new TestContext();
-        Scenario.of("keepItSimpleTest", testContext)
+        StepContext stepContext = new StepContext();
+        Scenario.of("keepItSimpleTest", stepContext)
                 .when(SomeStep.of().createWhen())
                 .then(SomeStep.of().createThen());
 
-        Assertions.assertEquals(2, testContext.numberOfStepsExecuted);
-        Assertions.assertEquals(0, testContext.numberOfGivenStepsExecuted);
-        Assertions.assertEquals(1, testContext.numberOfWhenStepsExecuted);
-        Assertions.assertEquals(1, testContext.numberOfThenStepsExecuted);
+        Assertions.assertEquals(2, stepContext.numberOfStepsExecuted);
+        Assertions.assertEquals(0, stepContext.numberOfGivenStepsExecuted);
+        Assertions.assertEquals(1, stepContext.numberOfWhenStepsExecuted);
+        Assertions.assertEquals(1, stepContext.numberOfThenStepsExecuted);
     }
 
     @Test
     public void splittedGiven() {
 
-        TestContext testContext = new TestContext();
-        GivenAPI scenario = Scenario.of("keepItSimpleTest", testContext)
+        StepContext stepContext = new StepContext();
+        GivenAPI scenario = Scenario.of("keepItSimpleTest", stepContext)
                 .given(SomeStep.of().createGiven());
         scenario.given(SomeStep.of().createGiven())
                 .when(SomeStep.of().createWhen())
                 .then(SomeStep.of().createThen());
 
-        Assertions.assertEquals(4, testContext.numberOfStepsExecuted);
-        Assertions.assertEquals(2, testContext.numberOfGivenStepsExecuted);
-        Assertions.assertEquals(1, testContext.numberOfWhenStepsExecuted);
-        Assertions.assertEquals(1, testContext.numberOfThenStepsExecuted);
+        Assertions.assertEquals(4, stepContext.numberOfStepsExecuted);
+        Assertions.assertEquals(2, stepContext.numberOfGivenStepsExecuted);
+        Assertions.assertEquals(1, stepContext.numberOfWhenStepsExecuted);
+        Assertions.assertEquals(1, stepContext.numberOfThenStepsExecuted);
     }
 
     @Test
     public void cyclic() {
 
-        TestContext testContext = new TestContext();
-        Scenario.of("keepItSimpleTest", testContext)
+        StepContext stepContext = new StepContext();
+        Scenario.of("keepItSimpleTest", stepContext)
                 .given(SomeStep.of().createGiven())
                 .when(SomeStep.of().createWhen())
                 .then(SomeStep.of().createThen())
@@ -63,17 +64,17 @@ public class BasicTests {
                 .then(SomeStep.of().createThen())
                 .when(SomeStep.of().createWhen());
 
-        Assertions.assertEquals(6, testContext.numberOfStepsExecuted);
-        Assertions.assertEquals(2, testContext.numberOfGivenStepsExecuted);
-        Assertions.assertEquals(2, testContext.numberOfWhenStepsExecuted);
-        Assertions.assertEquals(2, testContext.numberOfThenStepsExecuted);
+        Assertions.assertEquals(6, stepContext.numberOfStepsExecuted);
+        Assertions.assertEquals(2, stepContext.numberOfGivenStepsExecuted);
+        Assertions.assertEquals(2, stepContext.numberOfWhenStepsExecuted);
+        Assertions.assertEquals(2, stepContext.numberOfThenStepsExecuted);
     }
 
     @Test
     public void andBut() {
 
-        TestContext testContext = new TestContext();
-        Scenario.of("keepItSimpleTest", testContext)
+        StepContext stepContext = new StepContext();
+        Scenario.of("keepItSimpleTest", stepContext)
                 .given(SomeStep.of().createGiven())
                 .and(SomeStep.of().createGiven())
                 .but(SomeStep.of().createGiven())
@@ -84,9 +85,9 @@ public class BasicTests {
                 .and(SomeStep.of().createThen())
                 .but(SomeStep.of().createThen());
 
-        Assertions.assertEquals(9, testContext.numberOfStepsExecuted);
-        Assertions.assertEquals(3, testContext.numberOfGivenStepsExecuted);
-        Assertions.assertEquals(3, testContext.numberOfWhenStepsExecuted);
-        Assertions.assertEquals(3, testContext.numberOfThenStepsExecuted);
+        Assertions.assertEquals(9, stepContext.numberOfStepsExecuted);
+        Assertions.assertEquals(3, stepContext.numberOfGivenStepsExecuted);
+        Assertions.assertEquals(3, stepContext.numberOfWhenStepsExecuted);
+        Assertions.assertEquals(3, stepContext.numberOfThenStepsExecuted);
     }
 }

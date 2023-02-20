@@ -7,11 +7,11 @@ public class Scenario<Context> implements GivenAPI<Context>, WhenAPI<Context>, T
         this.context = context;
     }
 
-    static public <Context> Scenario of(String description, Context context) {
+    static public <Context> Scenario<Context> of(String description, Context context) {
         return new Scenario<Context>(description, context);
     }
 
-    public GivenAPI given(Given<Context> given) {
+    public GivenAPI<Context> given(Given<Context> given) {
         context = given.run(context);
         return this;
     }
