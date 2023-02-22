@@ -114,17 +114,17 @@ Like Gherkin, Giwth supports setting up a background preceeding every test:
 ```java
 @BeforeEach
 public void beforeEach() {
-        Scenario.background(new MyContext())
-                .given( RosterPeriod.startingOn("2022-09-19").exists() )
-                .and( User.of("peter").isLoggedin() )
-        }
+    Scenario.background(new MyContext())
+            .given( RosterPeriod.startingOn("2022-09-19").exists() )
+            .and( User.of("peter").isLoggedin() )
+}
 
 @Test
 public void someTest(){
-        Scenario.<MyContext>of("Modify Vacation Hours")
-                .when(Overview.isAccessed())
-                .and(VacationHours.forUser("peter").onDate("2022-09-19").isSetTo(20))
-                ...
+    Scenario.<MyContext>of("Modify Vacation Hours")
+            .when(Overview.isAccessed())
+            .and(VacationHours.forUser("peter").onDate("2022-09-19").isSetTo(20))
+            ...
 }
 ```
 
