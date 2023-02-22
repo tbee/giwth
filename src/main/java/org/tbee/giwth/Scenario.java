@@ -21,6 +21,7 @@ public class Scenario<Context> implements GivenAPI<Context>, WhenAPI<Context>, T
      */
     static public <Context> Scenario<Context> of(String description, Context context) {
         if (background.get() != null) {
+            background.set(null); // required to make test run correctly
             throw new IllegalStateException("Background(context) was already called, please us of(context) instead of this method");
         }
         return new Scenario<Context>(description, context);
@@ -34,6 +35,7 @@ public class Scenario<Context> implements GivenAPI<Context>, WhenAPI<Context>, T
      */
     static public <Context> Scenario<Context> background(Context context) {
         if (background.get() != null) {
+            background.set(null); // required to make test run correctly
             throw new IllegalStateException("Background(context) was already called");
         }
         Scenario<Context> scenario = new Scenario<>("<background>", context);
