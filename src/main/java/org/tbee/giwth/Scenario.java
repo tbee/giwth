@@ -45,7 +45,7 @@ public class Scenario<Context> implements GivenAPI<Context>, WhenAPI<Context>, T
 
     /**
      * Start the actual scenario, requires background(context) to have been called.
-     * Usage: Scenario.<Context>of(description)
+     * Usage: Scenario.&lt;Context&gt;of(description)
      *
      * @param description
      * @return
