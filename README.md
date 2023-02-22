@@ -108,6 +108,25 @@ The context class can be manipulated by the steps, storing data for future refer
 A step receives a context as an argument but also needs to return it, this allows Context to be implemented as immutable.
 This is not a requirement, but Giwth enables the user to do so, if preferred.
 
+## Background
+Like Gherkin, Giwth supports setting up a background preceeding every test:
+```java
+@BeforeEach
+public void beforeEach() {
+        Scenario.background(new MyContext())
+                .given( RosterPeriod.startingOn("2022-09-19").exists() )
+                .and( User.of("peter").isLoggedin() )
+        }
+
+@Test
+public void someTest(){
+        Scenario.<MyContext>of("Modify Vacation Hours")
+                .when(Overview.isAccessed())
+                .and(VacationHours.forUser("peter").onDate("2022-09-19").isSetTo(20))
+                ...
+}
+```
+
 ## Data Tables
 Giwth does not (yet?) have support for something like Cucumber data tables.
 Parameterized tests, as provided by the testing framework, or standard Java records and lists can be used to replace them.

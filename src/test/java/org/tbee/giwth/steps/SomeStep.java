@@ -34,4 +34,9 @@ public class SomeStep {
         };
     }
 
+    public Given<StepContext> failingGiven() {
+        return stepContext -> {
+            throw new IllegalStateException("fail");
+        };
+    }
 }

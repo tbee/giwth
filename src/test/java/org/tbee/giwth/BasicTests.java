@@ -90,4 +90,25 @@ public class BasicTests {
         Assertions.assertEquals(3, stepContext.numberOfWhenStepsExecuted);
         Assertions.assertEquals(3, stepContext.numberOfThenStepsExecuted);
     }
+
+    @Test
+    public void wrongOf() {
+        IllegalStateException thrown = Assertions.assertThrows(IllegalStateException.class, () -> {
+            Scenario.of("keepItSimpleTest");
+        });
+        Assertions.assertEquals("Background(context) was not called prior to this method", thrown.getMessage());
+    }
+
+    @Test
+    public void failingStep() {
+        IllegalStateException thrown = Assertions.assertThrows(IllegalStateException.class, () -> {
+            StepContext stepContext = new StepContext();
+            Scenario.of("keepItSimpleTest", stepContext)
+                    .given(SomeStep.of().createGiven())
+                    .when(SomeStep.of().createWhen())
+                    .then(SomeStep.of().createThen())
+                    .given(SomeStep.of().failingGiven());
+        });
+        Assertions.assertEquals("fail", thrown.getMessage());
+    }
 }
