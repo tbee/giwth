@@ -50,6 +50,14 @@ public class BackgroundTests {
     }
 
     @Test
+    public void twoBackgrounds() {
+        IllegalStateException thrown = Assertions.assertThrows(IllegalStateException.class, () -> {
+            Scenario.background(new StepContext()); // first on is in the beforeEach
+        });
+        Assertions.assertEquals("Background(context) was already called", thrown.getMessage());
+    }
+
+    @Test
     public void twoOfs() {
         Scenario.of("keepItSimpleTest");
         IllegalStateException thrown = Assertions.assertThrows(IllegalStateException.class, () -> {
