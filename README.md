@@ -1,4 +1,4 @@
-# Giwth ('giveth')
+# GiWTh ('giveth')
 A small library for structuring unit / integration tests written in Java, inspired by Cucumber / Gherkin. 
 Usually an example explains more than a 1000 words, so let's start with that:
 
@@ -93,7 +93,7 @@ class User {
         };
     }
     
-    public When<MyContext> isLoggedIn() {
+    public When<MyContext> logsIn() {
         return myContext -> { // Writing it as a lamba makes it more readable
             ...
             return myContext;
@@ -110,20 +110,21 @@ This is not a requirement, but Giwth enables the user to do so, if preferred.
 
 ## Background
 Like Gherkin, Giwth supports setting up a background preceeding every test:
+
 ```java
 @BeforeEach
 public void beforeEach() {
-        Scenario.background(new MyContext())
-                .given( RosterPeriod.startingOn("2022-09-19").exists() )
-                .and( User.of("peter").isLoggedin() )
-        }
+    Scenario.background(new MyContext())
+            .given( RosterPeriod.startingOn("2022-09-19").exists() )
+            .and( User.of("peter").isLoggedin() )
+}
 
 @Test
 public void someTest(){
-        Scenario.<MyContext>of("Modify Vacation Hours")
-                .when(Overview.isAccessed())
-                .and(VacationHours.forUser("peter").onDate("2022-09-19").isSetTo(20))
-                ...
+    Scenario.<MyContext>of("Modify Vacation Hours")
+            .when(Overview.isAccessed())
+            .and(VacationHours.forUser("peter").onDate("2022-09-19").isSetTo(20))
+            ...
 }
 ```
 
