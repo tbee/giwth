@@ -5,4 +5,6 @@ public class StepContext {
     public int numberOfGivenStepsExecuted = 0;
     public int numberOfWhenStepsExecuted = 0;
     public int numberOfThenStepsExecuted = 0;
+
+    public String message;
 }
