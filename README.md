@@ -113,6 +113,34 @@ abstract public class CalculatorStepDefs {
 Granted, it is not as compact as the Cucumber notation, but conceptually -the code that needs to be typed- is not that far off.
 And with more steps the difference becomes less, because no regexps are needed and the parameters can be reused.
 
+Of course this can become more complex, but still the actual typed code is fairly to the point: 
+
+```java
+@Step(stripSuffix = "Def")
+abstract public class StepDef {
+
+    @Of
+    protected int stepParam;
+
+    abstract public class DoIt implements When<StepContext> {
+
+        @Arg
+        protected double verbArg;
+        protected String verbParam;
+
+        @Override
+        public StepContext run(StepContext stepContext) {
+            // ... all 3 variables are available to implemnt the step
+            return stepContext;
+        }
+    }
+}
+
+// Usage:
+...when(Step.ofStepParam(1).doit(2.34).verbParam("with grace"))
+
+```
+
 Aynhow, just something to make life easier.
 Maven will pick this up automatically, in an IDE annotation processing should be enabled.
 
