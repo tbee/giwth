@@ -110,7 +110,7 @@ abstract public class CalculatorStepDefs {
 
 ```
 
-Granted, it is not as compact as the Cucumber notation, but conceptually -the code that needs to be typed- it's not that far off.
+Granted, it is not as compact as the Cucumber notation, but conceptually -the code that needs to be typed- is not that far off.
 And with more steps the difference becomes less, because no regexps are needed and the parameters can be reused.
 
 Aynhow, just something to make life easier.
