@@ -58,6 +58,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <version>1.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
@@ -83,7 +90,6 @@
                 <version>3.0.0-M8</version>
                 <configuration>
                     <argLine>
-                        --add-opens java.base/java.util=ALL-UNNAMED
                     </argLine>
                 </configuration>
             </plugin>

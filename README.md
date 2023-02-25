@@ -127,6 +127,50 @@ public void someTest(){
             ...
 }
 ```
+## Builder support
+Writing builders is not trivial. 
+The regular expressions in Cucumber map onto arguments in the method call, that is a whole lot simpler than writing a complete builder.
+Which is a valid argument, but Giwth has you covered.
+
+Consider this example of a step definition in Cucumber:
+
+```java
+public class CalculatorStepDefs {
+    
+    @When("^I add (-?\\d+) and (-?\\d+)$")
+    public void testAdd(int num1, int num2) throws Throwable{
+        // ...
+    }
+}
+```
+
+Using Giwth builder support, it's equivalent would be:
+
+```java
+@Step(stripSuffix = "StepDefs")
+abstract public class CalculatorStepDefs {
+
+    @Of
+    protected int num;
+
+    public When<StepContext> add(int num2) {
+        return stepContext -> {
+            // ...
+            return stepContext;
+        };
+    }
+}
+
+// Usage:
+...when(Calculator.ofNum(1).add(2))
+
+```
+
+Granted, it is not as compact as the Cucumber notation, but conceptually -the code that needs to be typed- it's not that far off.
+And with more steps the difference becomes less, because no regexps are needed and the parameters can be reused.
+
+Aynhow, just something to make life easier. 
+Maven will pick this up automatically, in an IDE annotation processing should be enabled.
 
 ## Data Tables
 Giwth does not (yet?) have support for something like Cucumber data tables.

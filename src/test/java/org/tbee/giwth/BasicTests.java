@@ -40,7 +40,7 @@ public class BasicTests {
     public void splittedGiven() {
 
         StepContext stepContext = new StepContext();
-        GivenAPI scenario = Scenario.of("keepItSimpleTest", stepContext)
+        GivenAPI<StepContext> scenario = Scenario.of("keepItSimpleTest", stepContext)
                 .given(SomeStep.of().createGiven());
         scenario.given(SomeStep.of().createGiven())
                 .when(SomeStep.of().createWhen())

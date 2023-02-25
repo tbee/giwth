@@ -2,7 +2,7 @@ package org.tbee.giwth;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.tbee.giwth.steps.GeneratedStep;
+import org.tbee.giwth.builder.BuilderStep;
 import org.tbee.giwth.steps.ComplexStepManual;
 import org.tbee.giwth.steps.SimpleStepManual;
 import org.tbee.giwth.steps.StandardStepManual;
@@ -41,31 +41,50 @@ public class StepTests {
     }
 
     @Test
-    public void simpleGenerated() {
+    public void simpleBuild() {
 
         StepContext stepContext = new StepContext();
         Scenario.of("keepItSimpleTest", stepContext)
-                .given(GeneratedStep.actionDirectly("value1"));
+                .given(BuilderStep.actionDirectly("value1"));
 
         Assertions.assertEquals("actionArg=value1", stepContext.message);
     }
 
     @Test
-    public void standardGenerated() {
+    public void standardBuild() {
 
         StepContext stepContext = new StepContext();
         Scenario.of("keepItSimpleTest", stepContext)
-                .given(GeneratedStep.ofStepParam("value1").actionWithoutParams("value2"));
+                .given(BuilderStep.of().stepParam("value1").actionWithoutParams("value2"));
 
         Assertions.assertEquals("stepParam=value1, actionArg=value2", stepContext.message);
     }
 
     @Test
-    public void complexGenerated() {
+    public void standardBuildOf() {
 
         StepContext stepContext = new StepContext();
         Scenario.of("keepItSimpleTest", stepContext)
-                .given(GeneratedStep.ofStepParam("value1").actionWithParams("value2").actionParam("value3"));
+                .given(BuilderStep.ofStepParam("value1").actionWithoutParams("value2"));
+
+        Assertions.assertEquals("stepParam=value1, actionArg=value2", stepContext.message);
+    }
+
+    @Test
+    public void complexBuild() {
+
+        StepContext stepContext = new StepContext();
+        Scenario.of("keepItSimpleTest", stepContext)
+                .given(BuilderStep.ofStepParam("value1").actionWithParametersWithoutArgument().actionParam("value3"));
+        Assertions.assertEquals("stepParam=value1, actionParam=value3", stepContext.message);
+    }
+
+    @Test
+    public void complexBuildParam() {
+
+        StepContext stepContext = new StepContext();
+        Scenario.of("keepItSimpleTest", stepContext)
+                .given(BuilderStep.ofStepParam("value1").actionWithParameters("value2").actionParam("value3"));
 
         Assertions.assertEquals("stepParam=value1, actionArg=value2, actionParam=value3", stepContext.message);
     }

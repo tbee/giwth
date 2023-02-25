@@ -1,12 +1,16 @@
-package org.tbee.giwth.steps;
+package org.tbee.giwth.builder;
 
 import org.tbee.giwth.Given;
+import org.tbee.giwth.builder.annotations.Arg;
+import org.tbee.giwth.builder.annotations.Of;
+import org.tbee.giwth.builder.annotations.Step;
+import org.tbee.giwth.steps.StepContext;
 
 /**
  * This is what the user would define
  */
-// @Step to trigger the builder generator
-abstract public class GeneratedStepA {
+@Step(stripSuffix = "A")
+abstract public class BuilderStepA {
 
     /**
      * Methods without any parameters can be written directly
@@ -19,7 +23,7 @@ abstract public class GeneratedStepA {
         };
     }
 
-    // @Of specifies it needs an ofStepParam() method as well, besides the stepParam()
+    @Of
     protected String stepParam = "default";
 
     /**
@@ -39,9 +43,25 @@ abstract public class GeneratedStepA {
      * A class is needed to support actions with additional parameters.
      * The class name defines the method name.
      */
+    abstract public class ActionWithParametersWithoutArgument implements Given<StepContext> {
+
+        protected String actionParam = "default";
+
+        @Override
+        public StepContext run(StepContext stepContext) {
+            stepContext.message = "stepParam=" + stepParam + ", actionParam=" + actionParam;
+            System.out.println(stepContext.message);
+            return stepContext;
+        }
+    }
+
+    /**
+     * A class is needed to support actions with additional parameters.
+     * The class name defines the method name.
+     */
     abstract public class ActionWithParameters implements Given<StepContext> {
 
-        // @ActionArg specifies this will be part of the arguments of actionWithParameters()
+        @Arg
         protected String actionArg = "default";
         protected String actionParam = "default";
 
