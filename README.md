@@ -18,7 +18,7 @@ Scenario.of("Modify Vacation Hours", new MyContext())
 ```
 
 What you see here is the Giwth equivalent of a Cucumber test which normally would be written in Gherkin. 
-And as with that framework it consists of two parts. First the Given/When/Test frame
+And as with that framework it consists of two parts. First the Given/When/Then frame
 
 ```java
 Scenario.of(...)
