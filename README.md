@@ -43,7 +43,7 @@ So if this so closely resembles Cucumber, what is the added value?
 Well, Cucumber has a few issues, and one of the most disturbing ones is that the regular expressions used to match sentences in the feature file to Java methods is a bit fragile.
 Also Cucumber does not clearly distinguish between step definitions for Given / When / Then, everything needs to be done with these regular expressions.
 Giwth completely eliminates the regular expressions and uses the step definitions directly in the scenario.
-A little explanation of the reasons behind Giwth can be found in this [blog](https://www.tbee.org/2023/02/19/given-when-then/).
+A short explanation of the reasons behind Giwth can be found in this [blog](https://www.tbee.org/2023/02/19/given-when-then/).
 
 ## Step definitions
 The scenario requires implementations of specific interfaces, Given, When, Then, for each of the three phases.
