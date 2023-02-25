@@ -13,7 +13,7 @@ Scenario.of("Modify Vacation Hours", new MyContext())
 
         .then( VacationHours.forUser("peter").onDate("2022-09-19").shouldBe(20) )
         .and( WeekTotals.forUser("peter").inRosterPeriod("2022-09-19").shouldBe(20,0,0,0,0,0) )
-        .and( RunningWeekTotals.forUser("peter").inRosterPeriod("2022-09-19").shouldBe(20,0,0,0,0,0) )
+        .and( RunningWeekTotals.forUser("peter").inRosterPeriod("2022-09-19").shouldBe(20,20,20,20,20,20) )
         .and( Event.who("peter").what("SetVacationHours").user("peter").rosterPeriod("2022-09-19").detailSubstring("hours=20").exists() );
 ```
 
@@ -195,8 +195,8 @@ public void beforeEach() {
 @Test
 public void someTest(){
     Scenario.<MyContext>of("Modify Vacation Hours")
-            .when(Overview.isAccessed())
-            .and(VacationHours.forUser("peter").onDate("2022-09-19").isSetTo(20))
+            .when( Overview.isAccessed() )
+            .and( VacationHours.forUser("peter").onDate("2022-09-19").isSetTo(20) )
             ...
 }
 ```
