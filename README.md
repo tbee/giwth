@@ -73,8 +73,8 @@ Unlike Cucumber you cannot (accidentally) mix the step definitions, they are str
 
 ## Builder support
 Writing builders is not trivial.
-The regular expressions in Cucumber map onto arguments in the method call, that is a whole lot simpler than writing a complete builder.
-Which is a valid argument, but Giwth has you covered.
+The regular expressions in Cucumber map onto arguments in the method call, which is a whole lot simpler than writing a complete builder.
+But Giwth has you covered.
 
 Consider this example of a step definition in Cucumber:
 
