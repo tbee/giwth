@@ -94,7 +94,6 @@ Using Giwth builder support, it's equivalent would be:
 @Step(stripSuffix = "StepDefs")
 abstract public class CalculatorStepDefs {
 
-    @Of
     protected int num;
 
     public When<StepContext> add(int num2) {
@@ -106,28 +105,34 @@ abstract public class CalculatorStepDefs {
 }
 
 // Usage:
-...when(Calculator.ofNum(1).add(2))
-
+...when(Calculator.of().num(1).add(2))
 ```
 
 Granted, it is not as compact as the Cucumber notation, but conceptually -the code that needs to be typed- is not that far off.
 And with more steps the difference becomes less, because no regexps are needed and the parameters can be reused. 
 Also, the "abstract" and "protected" are more factual, but can be omitted.
+And there are some additional annotations to tune the generated code (see below).
 
-Of course such a builder can become more complex, but still the actual typed code is fairly to the point: 
+The basic usage pattern of a generated builder is:
+
+```java
+Step.ofStepParam1(x).stepParam2(y).action(actionArguments).actionParameter1(z);
+```
+
+A builder can become more complex, but still the actual typed code is fairly to the point: 
 
 ```java
 @Step(stripSuffix = "Def")
 public class StepDef {
 
-    @Of
+    @Of // adds a static method ofStepParam()
     int stepParam;
 
     public class DoIt implements When<StepContext> {
 
-        @Arg
-        double verbArg;
-        String verbParam;
+        @Arg // moves actionArg into the doIt() method argument list
+        double actionArg;
+        String actionParam;
 
         @Override
         public StepContext run(StepContext stepContext) {
@@ -138,8 +143,7 @@ public class StepDef {
 }
 
 // Usage:
-...when(Step.ofStepParam(1).doit(2.34).verbParam("with grace"))
-
+...when(Step.ofStepParam(1).doit(2.34).actionParam("with grace"))
 ```
 
 Aynhow, just something to make life easier.
