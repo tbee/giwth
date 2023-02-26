@@ -111,26 +111,27 @@ abstract public class CalculatorStepDefs {
 ```
 
 Granted, it is not as compact as the Cucumber notation, but conceptually -the code that needs to be typed- is not that far off.
-And with more steps the difference becomes less, because no regexps are needed and the parameters can be reused.
+And with more steps the difference becomes less, because no regexps are needed and the parameters can be reused. 
+Also, the "abstract" and "protected" are more factual, but can be omitted.
 
-Of course this can become more complex, but still the actual typed code is fairly to the point: 
+Of course such a builder can become more complex, but still the actual typed code is fairly to the point: 
 
 ```java
 @Step(stripSuffix = "Def")
-abstract public class StepDef {
+public class StepDef {
 
     @Of
-    protected int stepParam;
+    int stepParam;
 
-    abstract public class DoIt implements When<StepContext> {
+    public class DoIt implements When<StepContext> {
 
         @Arg
-        protected double verbArg;
-        protected String verbParam;
+        double verbArg;
+        String verbParam;
 
         @Override
         public StepContext run(StepContext stepContext) {
-            // ... all 3 variables are available to implemnt the step
+            // ... all 3 variables are available to implement the step
             return stepContext;
         }
     }

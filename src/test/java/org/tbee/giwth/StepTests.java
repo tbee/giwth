@@ -84,8 +84,8 @@ public class StepTests {
 
         StepContext stepContext = new StepContext();
         Scenario.of("keepItSimpleTest", stepContext)
-                .given(BuilderStep.ofStepParam("value1").actionWithParameters("value2").actionParam("value3"));
+                .given(BuilderStep.ofStepParam("value1").actionWithParameters("value2", 1.23).actionParam("value3"));
 
-        Assertions.assertEquals("stepParam=value1, actionArg=value2, actionParam=value3", stepContext.message);
+        Assertions.assertEquals("stepParam=value1, actionArg1=value2, actionArg2=1.23, actionParam=value3", stepContext.message);
     }
 }

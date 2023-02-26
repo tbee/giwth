@@ -10,7 +10,7 @@ import org.tbee.giwth.steps.StepContext;
  * This is what the user would define
  */
 @Step(stripSuffix = "A")
-abstract public class BuilderStepA {
+public class BuilderStepA {
 
     /**
      * Methods without any parameters can be written directly
@@ -24,7 +24,7 @@ abstract public class BuilderStepA {
     }
 
     @Of
-    protected String stepParam = "default";
+    String stepParam = "default";
 
     /**
      * Methods without action parameters can be written directly
@@ -45,7 +45,7 @@ abstract public class BuilderStepA {
      */
     abstract public class ActionWithParametersWithoutArgument implements Given<StepContext> {
 
-        protected String actionParam = "default";
+        String actionParam = "default";
 
         @Override
         public StepContext run(StepContext stepContext) {
@@ -59,15 +59,17 @@ abstract public class BuilderStepA {
      * A class is needed to support actions with additional parameters.
      * The class name defines the method name.
      */
-    abstract public class ActionWithParameters implements Given<StepContext> {
+    public class ActionWithParameters implements Given<StepContext> {
 
         @Arg
-        protected String actionArg = "default";
-        protected String actionParam = "default";
+        String actionArg1 = "default";
+        @Arg
+        double actionArg2 = 0;
+        String actionParam = "default";
 
         @Override
         public StepContext run(StepContext stepContext) {
-            stepContext.message = "stepParam=" + stepParam + ", actionArg=" + actionArg + ", actionParam=" + actionParam;
+            stepContext.message = "stepParam=" + stepParam + ", actionArg1=" + actionArg1 + ", actionArg2=" + actionArg2 + ", actionParam=" + actionParam;
             System.out.println(stepContext.message);
             return stepContext;
         }

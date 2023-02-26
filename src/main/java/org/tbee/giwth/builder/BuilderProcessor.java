@@ -21,6 +21,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 // https://www.baeldung.com/java-annotation-processing-builder
 // https://hannesdorfmann.com/annotation-processing/annotationprocessing101/
@@ -95,17 +96,21 @@ public class BuilderProcessor extends AbstractProcessor {
             }
 
             // class declaration
-            writer.print("public class ");
-            writer.print(classSimpleName);
-            writer.print(" extends ");
-            writer.print(annotatedClassName);
-            writer.println(" {");
+            writer.print("""
+                         public class  %classSimpleName% extends %annotatedClassName% { 
+                             
+                         """
+                    .replace("%classSimpleName%", classSimpleName)
+                    .replace("%annotatedClassName%", annotatedClassName));
 
             // static of() method
-            writer.print("" +
-                    "    static public " + className + " of() {\n" +
-                    "        return new " + className + "();\n" +
-                    "    }\n\n");
+            writer.print("""
+                             static public %className% of() {
+                                return new %className%();
+                             }
+                             
+                         """
+                    .replace("%className%", className));
 
             // process the class' contents
             for (Element element : classTypeElement.getEnclosedElements()) {
@@ -129,20 +134,31 @@ public class BuilderProcessor extends AbstractProcessor {
         String variableName = variableElement.getSimpleName().toString();
 
         // Write method
-        writer.print("" +
-                "    public " + className + " " + variableName + "(" + variableType + " v) {\n" +
-                "        this." + variableName + " = v;\n" +
-                "        return this;\n" +
-                "    }\n\n");
+        writer.print("""
+                         public %className% %variableName%(%variableType% v) { 
+                             this.%variableName% = v;
+                             return this;
+                         }
+                         
+                     """
+                .replace("%className%", className)
+                .replace("%variableType%", variableType)
+                .replace("%variableName%", variableName));
 
         // If of-annotation is present, write static of-method
         Of ofAnnotation = variableElement.getAnnotation(Of.class);
         if (ofAnnotation != null) {
             String methodName = "of" + (ofAnnotation.name().length() > 0 ? ofAnnotation.name() : firstUpper(variableName));
-            writer.print("" +
-                    "    static public " + className + " " + methodName + "(" + variableType + " v) {\n" +
-                    "        return of()." + variableName + "(v);\n" +
-                    "    }\n\n");
+            writer.print("""
+                         static public %className% %methodName%(%variableType% v) { 
+                             return of().%variableName%(v);
+                         }
+                         
+                     """
+                    .replace("%className%", className)
+                    .replace("%variableType%", variableType)
+                    .replace("%variableName%", variableName)
+                    .replace("%methodName%", methodName));
         }
     }
 
@@ -155,7 +171,12 @@ public class BuilderProcessor extends AbstractProcessor {
 
         // Write the class, including parameters, but collect any encountered arguments (those need to go into the method)
         List<Argument> arguments = new ArrayList<>();
-        writer.print("    public class " + implClassSimpleName + " extends " + classSimpleName + " {\n");
+        writer.print("""
+                         public class  %implClassSimpleName% extends %classSimpleName% { 
+                             
+                     """
+                .replace("%implClassSimpleName%", implClassSimpleName)
+                .replace("%classSimpleName%", classSimpleName));
         for (Element element : subclassTypeElement.getEnclosedElements()) {
             if (element instanceof VariableElement variableElement) {
                 verbParameter(implClassSimpleName, writer, variableElement, arguments);
@@ -164,23 +185,24 @@ public class BuilderProcessor extends AbstractProcessor {
         writer.print("    }\n\n");
 
         // Write the method
-        writer.print("    public " + implClassSimpleName + " " + firstLower(classSimpleName) + "(");
-        // Add the arguments in the declaration
-        for (Argument argument : arguments) {
-            writer.print((arguments.indexOf(argument) == 0 ? "" : ", ") +
-                "" + argument.type() + " " + argument.name());
-        }
-        // Create the instance
-        writer.print(") {\n" +
-                "        " + implClassSimpleName + " verb = new " + implClassSimpleName + "();\n");
-        // Assign the arguments
-        for (Argument argument : arguments) {
-            writer.print("        verb." + argument.name() + " = " + argument.name() + ";\n");
-        }
-        // Return the instance
-        writer.print("" +
-                "        return verb;\n" +
-                "    }\n\n");
+        // First process the arguments
+        String argumentDefinition = arguments.stream()
+                 .map(a -> a.type + " " + a.name())
+                 .collect(Collectors.joining(", "));
+        String argumentAssignments = arguments.stream()
+                .map(a -> "        giwth." + a.name + " = " + a.name() + ";")
+                .collect(Collectors.joining("\n"));
+        writer.print("""
+                         public %implClassSimpleName% %methodName%(%argumentDefinition%) {
+                             %implClassSimpleName% giwth = new %implClassSimpleName%();
+                     %argumentAssignments%
+                             return giwth;
+                         }    
+                     """
+                .replace("%implClassSimpleName%", implClassSimpleName)
+                .replace("%methodName%", firstLower(classSimpleName))
+                .replace("%argumentDefinition%", argumentDefinition)
+                .replace("%argumentAssignments%", argumentAssignments));
     }
 
     record Argument(String type, String name) {}
@@ -199,11 +221,16 @@ public class BuilderProcessor extends AbstractProcessor {
         }
 
         // Write method
-        writer.print("" +
-                "        public " + className + " " + variableName + "(" + variableType + " v) {\n" +
-                "             this." + variableName + " = v;\n" +
-                "             return this;\n" +
-                "         }\n\n");
+        writer.print("""
+                             public %className% %variableName%(%variableType% v) { 
+                                  this.%variableName% = v;
+                                 return this;
+                             }
+                         
+                     """
+                .replace("%className%", className)
+                .replace("%variableType%", variableType)
+                .replace("%variableName%", variableName));
     }
 
     private String firstUpper(String s) {
