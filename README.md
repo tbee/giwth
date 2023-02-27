@@ -116,7 +116,7 @@ And there are some additional annotations to tune the generated code (see below)
 The basic usage pattern of a generated builder is:
 
 ```java
-Step.ofStepParam1(x).stepParam2(y).action(actionArguments).actionParameter1(z);
+Step.of().stepParamN(x).action(actionArguments).actionParameterN(y);
 ```
 
 A builder can become more complex, but still the actual typed code is fairly to the point: 
@@ -125,9 +125,10 @@ A builder can become more complex, but still the actual typed code is fairly to 
 @Step(stripSuffix = "Def")
 public class StepDef {
 
-    @Of // adds a static method ofStepParam()
+    @Of // adds a static factory method ofStepParam()
     int stepParam;
 
+    // will create a method doIt() derived from the class name
     public class DoIt implements When<StepContext> {
 
         @Arg // moves actionArg into the doIt() method argument list
