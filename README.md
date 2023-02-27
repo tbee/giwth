@@ -214,3 +214,9 @@ Parameterized tests, as provided by the testing framework, or standard Java reco
 ## Sequence
 Like Cucumber, Giwth allows the user to mix and match given, when and then; it does not enforce only three steps. 
 The question of course is if it is wise to do that, but that is left to the discretion of the user. 
+
+## Compatibility
+As long as you stick to Giwth's API, upgrading should not be too much of a hassle. If you start being extra creative, you're on your own ;-)
+
+## Support
+There is no formal support for Giwth: this library is an open source hobby project and no claims can be made. Asking for help is always an option. But so is participating, creating pull requests, and other ways of contributing.
