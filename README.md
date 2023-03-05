@@ -222,7 +222,7 @@ As long as you stick to Giwth's API, upgrading should not be too much of a hassl
 There is no formal support for Giwth: this library is an open source hobby project and no claims can be made. Asking for help is always an option. But so is participating, creating pull requests, and other ways of contributing.
 
 ## Usage
-Just include a dependency in your project.
+Just include a dependency in your project. For the latest version see [Maven central](https://central.sonatype.com/namespace/org.tbee.giwth)
 
 ```xml
 <dependency>
@@ -232,3 +232,4 @@ Just include a dependency in your project.
     <scope>test</scope>
 </dependency>
 ```
+
