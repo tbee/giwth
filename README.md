@@ -131,8 +131,9 @@ public class StepDef {
     // will create a method action() derived from the class name
     public class Action implements When<StepContext> {
 
-        @Arg // moves actionArg into the doIt() method argument list
+        @Arg // moves actionArg into the action() method argument list
         double actionArg;
+
         String actionParam;
 
         @Override
