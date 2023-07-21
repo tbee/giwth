@@ -1,6 +1,6 @@
 # GiWTh ('giveth')
 A small library for structuring unit / integration tests written in Java, inspired by Cucumber / Gherkin. 
-Usually an example explains more than a 1000 words, so let's start with that:
+Usually an example explains more than a thousand words, so let's start with that:
 
 ```java
 Scenario.of("Modify Vacation Hours", new MyContext())
@@ -209,8 +209,56 @@ public void someTest(){
 ```
 
 ## Data Tables
-Giwth does not (yet?) have support for something like Cucumber data tables.
-Parameterized tests, as provided by the testing framework, or standard Java records and lists can be used to replace them.
+Giwth does have initial support for Cucumber data tables.
+You can write something like this:
+
+```java
+Scenario.of("basicTable", stepContext)
+        .given(Users.exist(
+               """
+               | firstName | lastName | age |
+               | Donald    | Duck     | 40  |
+               | Mickey    | Mouse    | 45  |
+               | Dagobert  | Duck     | 60  |
+               """))
+```
+
+And then implement that using the TableProcessor:
+
+```java
+static public Given<StepContext> exist(String table) {
+    return stepContext -> {
+        List<User> users = new ArrayList<>();
+        
+        new TableProcessor<User>()
+            .onLineStart(i -> new User())
+            .onLineEnd((i, user) -> users.add(user))
+        
+            .onField("firstName", (user, v) -> user.firstName(v))
+            .onField("lastName", (user, v) -> user.lastName(v))
+            .onField("age", (user, v) -> user.age(Integer.parseInt(v)))
+        
+            .process(table);
+        
+        return stepContext;
+    };
+}
+```
+
+However, one of the ideas of GiWTh is being compile time checkable, tables will negate this.
+Matching of the column headers and onField methods are fragile, String to data type (e.g. age) is sensitive.
+But on the other hand, failures happen at test time, which is probably good enough; it at least is not at runtime.
+
+Alternatively a table could be implemented like so:
+
+```java
+Scenario.of("basicTable", stepContext)
+        .given(User.of().firstName("Donald")  .lastName("Duck").exists())
+        .and(  User.of().firstName("Mickey")  .lastName("Mouse").exists())
+        .and(  User.of().firstName("Dagobert").lastName("Duck").exists());
+```
+
+For you to decide what is preferable.
 
 ## Sequence
 Like Cucumber, Giwth allows the user to mix and match given, when and then; it does not enforce only three steps. 
