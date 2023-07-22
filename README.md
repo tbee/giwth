@@ -208,6 +208,9 @@ public void someTest(){
 }
 ```
 
+Background requires using the combination of background(context) with of(description) factory methods.
+Background is handled using thread-local storage, so multiple tests can run in parallel.
+
 ## Data Tables
 Giwth does have initial support for Cucumber data tables.
 You can write something like this:
