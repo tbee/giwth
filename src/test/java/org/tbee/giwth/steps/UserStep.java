@@ -12,7 +12,6 @@ public class UserStep {
                     .onLineStart(i -> new User())
                     .onLineEnd((i, user) -> stepContext.users.add(user))
                     .onField((rowIdx, colIdx, row, key, value) -> stepContext.trace.add("(" + rowIdx + "," + colIdx + ") " + key + "=" + value + " for " + row))
-                    .onField((key, value) -> stepContext.trace.add(key + "->" + value))
                     .onField("firstName", (user, v) -> user.firstName(v))
                     .onField("lastName", (user, v) -> user.lastName(v))
                     .onField("age", (user, v) -> user.age(Integer.parseInt(v)))

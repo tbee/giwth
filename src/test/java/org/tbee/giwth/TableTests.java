@@ -27,6 +27,5 @@ public class TableTests {
 
         // Assert the unused callbacks
         Assertions.assertEquals(1, stepContext.trace.stream().filter(t -> t.contains("(0,2) age=50 for org.tbee.giwth.steps.User@")).count());
-        Assertions.assertTrue(stepContext.trace.contains("firstName->Mickey"));
     }
 }

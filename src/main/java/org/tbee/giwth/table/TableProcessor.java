@@ -8,13 +8,48 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+
+/**
+ * Use the TableProcessor like this:
+ *
+ * <pre>
+ * static public Given<StepContext> exist(String table) {
+ *     return stepContext -> {
+ *         List<User> users = new ArrayList<>();
+ *
+ *         new TableProcessor<User>()
+ *             .onLineStart(i -> new User())
+ *             .onLineEnd((i, user) -> users.add(user))
+ *
+ *             .onField("firstName", (user, v) -> user.firstName(v))
+ *             .onField("lastName", (user, v) -> user.lastName(v))
+ *             .onField("age", (user, v) -> user.age(Integer.parseInt(v)))
+ *
+ *             .onField((rowIdx, colIdx, row, key, value) -> System.out.println("(" + rowIdx + "," + colIdx + ") " + key + "=" + value + " for " + row))
+ *
+ *             .process(table);
+ *
+ *         return stepContext;
+ *     };
+ * }
+ *
+ * Scenario.of("basicTable", stepContext)
+ *         .given(Users.exist(
+ *                """
+ *                | firstName | lastName | age |
+ *                | Donald    | Duck     | 40  |
+ *                | Mickey    | Mouse    | 45  |
+ *                | Dagobert  | Duck     | 60  |
+ *                """))
+ * </pre>
+ * @param <RowType>
+ */
 public class TableProcessor<RowType> {
 
     private Function<Integer, RowType> onLineStart = (lineIdx) -> null;
     private BiConsumer<Integer, RowType> onLineEnd = (lineIdx, row) -> {};
-    private OnFieldComplete<RowType> onFieldComplete = (rowIdx, colIdx, row, key, value) -> {};
-    private BiConsumer<String, String> onField = (id, value) -> {};
-    private final Map<String, BiConsumer<RowType, String>> onFieldString = new HashMap<>();
+    private OnField<RowType> onField = (rowIdx, colIdx, row, key, value) -> {};
+    private final Map<String, BiConsumer<RowType, String>> onSpecificField = new HashMap<>();
 
     /**
      * @param onLineStart called on start-of-data-line, zero-based line index
@@ -35,19 +70,10 @@ public class TableProcessor<RowType> {
     }
 
     /**
-     * @param onFieldComplete
-     * @return
-     */
-    public TableProcessor<RowType> onField(OnFieldComplete<RowType> onFieldComplete) {
-        this.onFieldComplete = onFieldComplete;
-        return this;
-    }
-
-    /**
      * @param onField
      * @return
      */
-    public TableProcessor<RowType> onField(BiConsumer<String, String> onField) {
+    public TableProcessor<RowType> onField(OnField<RowType> onField) {
         this.onField = onField;
         return this;
     }
@@ -59,7 +85,7 @@ public class TableProcessor<RowType> {
      * @return
      */
     public TableProcessor<RowType> onField(String key, BiConsumer<RowType, String> consumer) {
-        onFieldString.put(key, consumer);
+        onSpecificField.put(key, consumer);
         return this;
     }
 
@@ -79,25 +105,25 @@ public class TableProcessor<RowType> {
                 .collect(Collectors.toList());
 
         // The rest of the lines are data
-        for (int idx = 1; idx < lines.length; idx++) {
-            int rowIdx = idx - 1;
+        for (int lineIdx = 1; lineIdx < lines.length; lineIdx++) {
+            int rowIdx = lineIdx - 1;
             RowType row = onLineStart.apply(rowIdx);
 
             // Process the line
-            List<String> values = Arrays.stream(lines[idx].split("\\|"))
+            List<String> values = Arrays.stream(lines[lineIdx].split("\\|"))
                     .skip(1)
                     .map(h -> h.strip())
                     .collect(Collectors.toList());
 
-            // Call out for each field in the line
+            // For each field in the line
             for (int colIdx = 0; colIdx < headers.size(); colIdx++) {
                 String key = headers.get(colIdx);
                 String value = values.get(colIdx);
 
-                onFieldComplete.accept(rowIdx, colIdx, row, key, value);
-                onField.accept(key, value);
-                if (onFieldString.containsKey(key)) {
-                    onFieldString.get(key).accept(row, value);
+                // Callbacks
+                onField.accept(rowIdx, colIdx, row, key, value);
+                if (onSpecificField.containsKey(key)) {
+                    onSpecificField.get(key).accept(row, value);
                 }
             }
 
