@@ -245,9 +245,10 @@ static public Given<StepContext> exist(String table) {
 }
 ```
 
-However, one of the ideas of GiWTh is being compile time checkable, tables will negate this.
-Matching of the column headers and onField methods are fragile, String to data type (e.g. age) is sensitive.
-But on the other hand, failures happen at test time, which is probably good enough; it at least is not at runtime.
+However, one of the ideas of GiWTh is being compile time checkable, tables are not.
+Matching of the column headers in the onField methods is fragile, those are not checked at compile time.
+Value string to actual type conversion (e.g. integer for age) can have conversion problems (e.g. NumberFormatException).
+But on the other hand, any failures happen at test time, which is probably good enough; it at least is not at runtime.
 
 Alternatively a table could be implemented like so:
 
@@ -277,7 +278,7 @@ Just include a dependency in your project. For the latest version see [Maven cen
 <dependency>
     <groupId>org.tbee.giwth</groupId>
     <artifactId>giwth</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0</version>
     <scope>test</scope>
 </dependency>
 ```

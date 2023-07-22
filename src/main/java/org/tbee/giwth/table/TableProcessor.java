@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 /**
  * Use the TableProcessor like this:
  *
- * <pre>
+ * <pre>{@code
  * static public Given<StepContext> exist(String table) {
  *     return stepContext -> {
  *         List<User> users = new ArrayList<>();
@@ -41,7 +41,7 @@ import java.util.stream.Collectors;
  *                | Mickey    | Mouse    | 45  |
  *                | Dagobert  | Duck     | 60  |
  *                """))
- * </pre>
+ * }</pre>
  * @param <RowType>
  */
 public class TableProcessor<RowType> {
