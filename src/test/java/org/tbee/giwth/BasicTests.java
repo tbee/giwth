@@ -8,6 +8,16 @@ import org.tbee.giwth.steps.StepContext;
 public class BasicTests {
 
     @Test
+    public void scenario() {
+
+        StepContext stepContext = new StepContext();
+        Scenario<StepContext> scenario = Scenario.of("scenario description", stepContext);
+
+        Assertions.assertEquals("scenario description", scenario.description());
+        Assertions.assertEquals(stepContext, scenario.context());
+    }
+
+    @Test
     public void fullGWT() {
 
         StepContext stepContext = new StepContext();

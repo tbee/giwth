@@ -12,6 +12,7 @@ public class TableProcessor<RowType> {
 
     private Function<Integer, RowType> onLineStart = (lineIdx) -> null;
     private BiConsumer<Integer, RowType> onLineEnd = (lineIdx, row) -> {};
+    private OnFieldComplete<RowType> onFieldComplete = (rowIdx, colIdx, row, key, value) -> {};
     private BiConsumer<String, String> onField = (id, value) -> {};
     private final Map<String, BiConsumer<RowType, String>> onFieldString = new HashMap<>();
 
@@ -30,6 +31,15 @@ public class TableProcessor<RowType> {
      */
     public TableProcessor<RowType> onLineEnd(BiConsumer<Integer, RowType> onLineEnd) {
         this.onLineEnd = onLineEnd;
+        return this;
+    }
+
+    /**
+     * @param onFieldComplete
+     * @return
+     */
+    public TableProcessor<RowType> onField(OnFieldComplete<RowType> onFieldComplete) {
+        this.onFieldComplete = onFieldComplete;
         return this;
     }
 
@@ -70,8 +80,8 @@ public class TableProcessor<RowType> {
 
         // The rest of the lines are data
         for (int idx = 1; idx < lines.length; idx++) {
-            int idxFinal = idx;
-            RowType row = onLineStart.apply(idx - 1);
+            int rowIdx = idx - 1;
+            RowType row = onLineStart.apply(rowIdx);
 
             // Process the line
             List<String> values = Arrays.stream(lines[idx].split("\\|"))
@@ -80,17 +90,18 @@ public class TableProcessor<RowType> {
                     .collect(Collectors.toList());
 
             // Call out for each field in the line
-            for (int i = 0; i < headers.size(); i++) {
-                String key = headers.get(i);
-                String value = values.get(i);
+            for (int colIdx = 0; colIdx < headers.size(); colIdx++) {
+                String key = headers.get(colIdx);
+                String value = values.get(colIdx);
 
+                onFieldComplete.accept(rowIdx, colIdx, row, key, value);
                 onField.accept(key, value);
                 if (onFieldString.containsKey(key)) {
                     onFieldString.get(key).accept(row, value);
                 }
             }
 
-            onLineEnd.accept(idx - 1, row);
+            onLineEnd.accept(rowIdx, row);
         }
     }
 }

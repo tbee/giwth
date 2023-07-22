@@ -61,6 +61,14 @@ public class Scenario<Context> implements GivenAPI<Context>, WhenAPI<Context>, T
         return scenario;
     }
 
+    public String description() {
+        return description;
+    }
+
+    public Context context() {
+        return context;
+    }
+
     public GivenAPI<Context> given(Given<Context> given) {
         context = given.run(context);
         return this;
