@@ -264,6 +264,9 @@ Scenario.of("basicTable", stepContext)
 
 For you to decide what is preferable.
 
+If you need to escape characters in the data table, normal Java escapes can be used.
+Except, of course, for the pipe symbol itself: the \| will cause problems, so you need to use a double pipe "||". 
+
 ## Sequence
 Like Cucumber, Giwth allows the user to mix and match given, when and then; it does not enforce only three steps. 
 The question of course is if it is wise to do that, but that is left to the discretion of the user. 

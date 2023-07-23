@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -96,7 +97,7 @@ public class TableProcessor<RowType> {
     public void process(String contents) {
 
         // Split into lines
-        String[] lines = contents.trim().split("\\r?\\n|\\r");
+        String[] lines = contents.trim().split("\\|(\\r?\\n|\\r)");
 
         // Use the first line to extract the headers
         List<String> headers = Arrays.stream(lines[0].split("\\|"))
@@ -106,13 +107,15 @@ public class TableProcessor<RowType> {
 
         // The rest of the lines are data
         for (int lineIdx = 1; lineIdx < lines.length; lineIdx++) {
+            String line = lines[lineIdx];
             int rowIdx = lineIdx - 1;
             RowType row = onLineStart.apply(rowIdx);
 
             // Process the line
-            List<String> values = Arrays.stream(lines[lineIdx].split("\\|"))
+            String escapedPipePlaceholder = UUID.randomUUID().toString();
+            List<String> values = Arrays.stream(line.replace("||", escapedPipePlaceholder).split("\\|"))
                     .skip(1)
-                    .map(h -> h.strip())
+                    .map(h -> h.replace(escapedPipePlaceholder, "|").strip())
                     .collect(Collectors.toList());
 
             // For each field in the line

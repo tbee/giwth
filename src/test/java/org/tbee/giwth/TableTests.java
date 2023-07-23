@@ -28,4 +28,23 @@ public class TableTests {
         // Assert the unused callbacks
         Assertions.assertEquals(1, stepContext.trace.stream().filter(t -> t.contains("(0,2) age=50 for org.tbee.giwth.steps.User@")).count());
     }
+
+    @Test
+    public void escapeTable() {
+
+        StepContext stepContext = new StepContext();
+        Scenario.of("basicTable", stepContext)
+                .given(UserStep.exist(
+                        """
+                        | firstName  |
+                        | Do\nnald   |
+                        | Mic\\key   |
+                        | Dago||bert |
+                        """));
+
+        Assertions.assertEquals(3, stepContext.users.size());
+        Assertions.assertEquals("Do\nnald", stepContext.users.get(0).firstName());
+        Assertions.assertEquals("Mic\\key", stepContext.users.get(1).firstName());
+        Assertions.assertEquals("Dago|bert", stepContext.users.get(2).firstName());
+    }
 }
