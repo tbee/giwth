@@ -108,7 +108,7 @@ abstract public class CalculatorStepDefs {
 ...when(Calculator.of().num(1).add(2))
 ```
 
-Granted, it is not as compact as the Cucumber notation, but pratically -the code that needs to be typed- is not that far off.
+Granted, it is not as compact as the Cucumber notation, but practically -the code that needs to be typed- is not that far off.
 And with more steps the difference becomes less, because no regexps are needed and the parameters can be reused. 
 Also, the "abstract" and "protected" are more factual, but can be omitted.
 And there are some additional annotations to tune the generated code (see below).
