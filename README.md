@@ -257,9 +257,9 @@ Alternatively a table could be implemented like so:
 
 ```java
 Scenario.of("basicTable", stepContext)
-        .given(User.of().firstName("Donald")  .lastName("Duck").exists())
-        .and(  User.of().firstName("Mickey")  .lastName("Mouse").exists())
-        .and(  User.of().firstName("Dagobert").lastName("Duck").exists());
+        .given(User.firstName("Donald")  .lastName("Duck") .age(40).exists())
+        .and(  User.firstName("Mickey")  .lastName("Mouse").age(45).exists())
+        .and(  User.firstName("Dagobert").lastName("Duck") .age(60).exists());
 ```
 
 For you to decide what is preferable.
