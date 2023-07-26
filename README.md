@@ -269,7 +269,18 @@ Except, of course, for the pipe symbol itself: a \\| will cause errors, so you n
 
 ## Sequence
 Like Cucumber, Giwth allows the user to mix and match given, when and then; it does not enforce only three steps. 
-The question of course is if it is wise to do that, but that is left to the discretion of the user. 
+The question of course is if it is wise to do that, but that is left to the discretion of the user.
+However, the 'and' and 'but' following a given, when or then only accept the same type.
+
+```java
+Scenario.of(...)
+        .given( User.of("gwen").isLoggedin() ) // a Given sequence is started
+        .and( User.of("peter").logsIn() ) // ERROR, because 'and' expects a Given, not a When
+        .but( User.of("peter").shouldBeLoggedin() ) // ERROR, because 'but' expects a Given, not a Then
+        .when( ... ) // a When sequence is started
+        ...
+```
+
 
 ## Compatibility
 As long as you stick to Giwth's API, upgrading should not be too much of a hassle. If you start being extra creative, you're on your own ;-)
