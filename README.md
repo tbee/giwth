@@ -295,7 +295,7 @@ Just include a dependency in your project. For the latest version see [Maven cen
 <dependency>
     <groupId>org.tbee.giwth</groupId>
     <artifactId>giwth</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <scope>test</scope>
 </dependency>
 ```
