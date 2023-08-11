@@ -69,6 +69,7 @@ public class Scenario<Context> implements GivenAPI<Context>, WhenAPI<Context>, T
         return context;
     }
 
+    @Override
     public GivenAPI<Context> given(Given<Context> given) {
         context = given.run(context);
         return this;
