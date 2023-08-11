@@ -1,10 +1,6 @@
 package org.tbee.giwth.table;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -91,46 +87,44 @@ public class TableProcessor<RowType> {
     }
 
     /**
-     *
+     * Process a table string and execute the configured callbacks
      * @param contents
      */
     public void process(String contents) {
 
-        // Split into lines
-        String[] lines = contents.trim().split("\\|(\\r?\\n|\\r)");
+        String[] lines = splitIntoLines(contents);
+        List<String> headers = splitIntoFields(lines[0]);
 
-        // Use the first line to extract the headers
-        List<String> headers = Arrays.stream(lines[0].split("\\|"))
-                .skip(1)
-                .map(h -> h.strip())
-                .collect(Collectors.toList());
-
-        // The rest of the lines are data
         for (int lineIdx = 1; lineIdx < lines.length; lineIdx++) {
             String line = lines[lineIdx];
             int rowIdx = lineIdx - 1;
+            List<String> values = splitIntoFields(line);
+
             RowType row = onLineStart.apply(rowIdx);
-
-            // Process the line
-            String escapedPipePlaceholder = UUID.randomUUID().toString();
-            List<String> values = Arrays.stream(line.replace("||", escapedPipePlaceholder).split("\\|"))
-                    .skip(1)
-                    .map(h -> h.replace(escapedPipePlaceholder, "|").strip())
-                    .collect(Collectors.toList());
-
-            // For each field in the line
             for (int colIdx = 0; colIdx < headers.size(); colIdx++) {
                 String key = headers.get(colIdx);
                 String value = values.get(colIdx);
 
-                // Callbacks
                 onField.accept(rowIdx, colIdx, row, key, value);
                 if (onSpecificField.containsKey(key)) {
                     onSpecificField.get(key).accept(row, value);
                 }
             }
-
             onLineEnd.accept(rowIdx, row);
         }
+    }
+
+    private String[] splitIntoLines(String contents) {
+        String[] lines = contents.trim().split("\\|(\\r?\\n|\\r)");
+        return lines;
+    }
+
+    private List<String> splitIntoFields(String line) {
+        String escapedPipePlaceholder = UUID.randomUUID().toString();
+        List<String> values = Arrays.stream(line.replace("||", escapedPipePlaceholder).split("\\|"))
+                .skip(1)
+                .map(h -> h.replace(escapedPipePlaceholder, "|").strip())
+                .collect(Collectors.toList());
+        return values;
     }
 }
