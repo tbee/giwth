@@ -267,6 +267,44 @@ For you to decide what is preferable.
 If you need to escape characters in the data table, normal Java escapes can be used.
 Except, of course, for the pipe symbol itself: a \\| will cause errors, so you need to use a double pipe "||". 
 
+## Cucumber outline and examples
+Cucumber supports parameterized tests using outline and an examples block.
+
+```java
+Scenario Outline: Add two numbers <num1> & <num2>
+  Given I have a calculator
+  When I add <num1> and <num2>
+  Then the result should be <total>
+
+Examples:
+  | num1 | num2 | total |
+  |   10 |    6 |    16 |
+  |   -4 |    2 |    -2 |
+  |   -6 | -100 |  -106 |
+```
+
+Since GiWTh relies on an external testing framework like JUnit for execution, 
+it is not in control over the execution, and cannot provide a similar construct.
+
+But for example JUnit5's @CsvSource annotation can be made to look quite similar to data tables.  
+
+```java
+@DisplayName("Add two numbers:")
+@ParameterizedTest(name = "{index} => {0}: ({1}, {2})")
+@CsvSource(delimiter = '|', textBlock = """
+    pos         | 10 |    6 |   16
+    pos and neg | -4 |    2 |   -2        
+    neg         | -6 | -100 | -106
+    """)
+public void sumTest(String description, int num1, int num2, int total) {
+    Scenario.of("sumTest", stepContext)
+        .given( Calculator.hasValue(num1) )
+        .when( Calculator.add(num2) )
+        .then( Calculator.valueShouldBe(total) );
+}
+```
+This is so close that having GiWTh implement a special @DataTable extension for JUnit seems unnecessary.
+
 ## Sequence
 Like Cucumber, Giwth allows the user to mix and match given, when and then; it does not enforce only three steps. 
 The question of course is if it is wise to do that, but that is left to the discretion of the user.
