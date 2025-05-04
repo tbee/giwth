@@ -1,5 +1,7 @@
 package org.tbee.giwth;
 
+import java.util.UUID;
+
 public class Scenario<Context> implements GivenAPI<Context>, WhenAPI<Context>, ThenAPI<Context> {
 
     static private ThreadLocal<Scenario<?>> background = new ThreadLocal<Scenario<?>>();
@@ -14,10 +16,18 @@ public class Scenario<Context> implements GivenAPI<Context>, WhenAPI<Context>, T
 
     /**
      * Start a new scenario
+     * @param context
+     * @return
+     */
+    static public <Context> Scenario<Context> of(Context context) {
+        return of(UUID.randomUUID().toString(), context);
+    }
+
+    /**
+     * Start a new scenario
      * @param description
      * @param context
      * @return
-     * @param <Context>
      */
     static public <Context> Scenario<Context> of(String description, Context context) {
         if (background.get() != null) {
