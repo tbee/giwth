@@ -99,7 +99,6 @@ abstract public class CalculatorStepDefs {
     public When<StepContext> add(int num2) {
         return stepContext -> {
             // ...
-            return stepContext;
         };
     }
 }
@@ -137,9 +136,8 @@ public class StepDef {
         String actionParam;
 
         @Override
-        public StepContext run(StepContext stepContext) {
+        public void run(StepContext stepContext) {
             // ... all 3 variables are available to implement the step
-            return stepContext;
         }
     }
 }
@@ -168,7 +166,6 @@ class User {
             @Override
             public MyContext run(MyContext myContext) {  // Is made available here
                 ...
-                return myContext;
             }
         };
     }
@@ -176,7 +173,6 @@ class User {
     public When<MyContext> logsIn() {
         return myContext -> { // Writing it as a lamba makes it more readable
             ...
-            return myContext;
         };
     }
 }
@@ -184,9 +180,6 @@ class User {
 
 The context is also strongly typed: each step definition method specifies what class it expects as the argument, so it makes sense to use a single Context class for all tests to allow maximum reusability of the steps.
 The context class can be manipulated by the steps, storing data for future reference, or for use by other steps.
-
-A step receives a context as an argument but also needs to return it, this allows Context to be implemented as immutable.
-This is not a requirement, but Giwth enables the user to do so, if preferred.
 
 ## Background
 Like Gherkin, Giwth supports setting up a background preceeding every test:
@@ -242,8 +235,6 @@ static public Given<StepContext> exist(String table) {
             .onField("age", (user, v) -> user.age(Integer.parseInt(v)))
         
             .process(table);
-        
-        return stepContext;
     };
 }
 ```
