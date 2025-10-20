@@ -14,7 +14,6 @@ public class SomeStep {
         return stepContext -> {
             stepContext.numberOfStepsExecuted++;
             stepContext.numberOfGivenStepsExecuted++;
-            return stepContext;
         };
     }
 
@@ -22,7 +21,6 @@ public class SomeStep {
         return stepContext -> {
             stepContext.numberOfStepsExecuted++;
             stepContext.numberOfWhenStepsExecuted++;
-            return stepContext;
         };
     }
 
@@ -30,7 +28,6 @@ public class SomeStep {
         return stepContext -> {
             stepContext.numberOfStepsExecuted++;
             stepContext.numberOfThenStepsExecuted++;
-            return stepContext;
         };
     }
 

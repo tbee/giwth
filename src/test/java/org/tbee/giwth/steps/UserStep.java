@@ -16,7 +16,6 @@ public class UserStep {
                     .onField("lastName", (user, v) -> user.lastName(v))
                     .onField("age", (user, v) -> user.age(Integer.parseInt(v)))
                     .process(table);
-            return stepContext;
         };
     }
 }

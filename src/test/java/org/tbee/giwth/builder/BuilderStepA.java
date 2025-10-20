@@ -19,7 +19,6 @@ public class BuilderStepA {
         return stepContext -> {
             stepContext.message = "actionArg=" + actionArg;
             System.out.println(stepContext.message);
-            return stepContext;
         };
     }
 
@@ -35,7 +34,6 @@ public class BuilderStepA {
         return stepContext -> {
             stepContext.message = "stepParam=" + stepParam + ", actionArg=" + actionArg;
             System.out.println(stepContext.message);
-            return stepContext;
         };
     }
 
@@ -48,10 +46,9 @@ public class BuilderStepA {
         String actionParam = "default";
 
         @Override
-        public StepContext run(StepContext stepContext) {
+        public void run(StepContext stepContext) {
             stepContext.message = "stepParam=" + stepParam + ", actionParam=" + actionParam;
             System.out.println(stepContext.message);
-            return stepContext;
         }
     }
 
@@ -68,10 +65,9 @@ public class BuilderStepA {
         String actionParam = "default";
 
         @Override
-        public StepContext run(StepContext stepContext) {
+        public void run(StepContext stepContext) {
             stepContext.message = "stepParam=" + stepParam + ", actionArg1=" + actionArg1 + ", actionArg2=" + actionArg2 + ", actionParam=" + actionParam;
             System.out.println(stepContext.message);
-            return stepContext;
         }
     }
 }

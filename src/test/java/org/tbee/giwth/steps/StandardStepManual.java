@@ -22,7 +22,6 @@ public class StandardStepManual {
         return stepContext -> {
             stepContext.message = "stepParam=" + stepParam + ", actionArg=" + actionArg;
             System.out.println(stepContext.message);
-            return stepContext;
         };
     }
 }

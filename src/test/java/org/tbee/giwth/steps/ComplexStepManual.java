@@ -36,10 +36,9 @@ public class ComplexStepManual {
         private String actionParam = "default";
 
         @Override
-        public StepContext run(StepContext stepContext) {
+        public void run(StepContext stepContext) {
             stepContext.message = "stepParam=" + stepParam + ", actionArg=" + actionArg + ", actionParam=" + actionParam;
             System.out.println(stepContext.message);
-            return stepContext;
         }
     }
 }

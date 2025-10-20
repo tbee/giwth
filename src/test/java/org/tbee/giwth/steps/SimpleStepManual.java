@@ -8,7 +8,6 @@ public class SimpleStepManual {
         return stepContext -> {
             stepContext.message = "actionArg=" + actionArg;
             System.out.println(stepContext.message);
-            return stepContext;
         };
     }
 }

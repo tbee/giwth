@@ -29,10 +29,7 @@ public class BackgroundTests {
                 .when(SomeStep.of().createWhen())
                 .then(SomeStep.of().createThen())
                 // For getting hold of the context
-                .and(stepContext -> {
-                    stepContextReference.set(stepContext);
-                    return stepContext;
-                });
+                .and(stepContextReference::set);
 
         StepContext stepContext = stepContextReference.get();
         Assertions.assertEquals(6, stepContext.numberOfStepsExecuted);
