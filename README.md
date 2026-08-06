@@ -108,7 +108,7 @@ class VacationHours {
 
         @Override
         public void run(MyContext myContext) {
-            // use hours, forUser and onDate hete to do what needs to be done.
+            // use hours, forUser and onDate to do what needs to be done.
         }
     }
 }
