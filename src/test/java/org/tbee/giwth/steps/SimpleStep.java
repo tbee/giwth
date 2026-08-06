@@ -2,7 +2,7 @@ package org.tbee.giwth.steps;
 
 import org.tbee.giwth.Given;
 
-public class SimpleStepManual {
+public class SimpleStep {
 
     static public Given<StepContext> action(String actionArg) {
         return stepContext -> {

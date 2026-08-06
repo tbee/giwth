@@ -6,7 +6,7 @@ Usually an example explains more than a thousand words, so let's start with that
 Scenario.of("Modify Vacation Hours", new MyContext())
 
         .given( RosterPeriod.exists().startingOn("2022-09-19") )
-        .and( User..isLoggedin(peter") )
+        .and( User.isLoggedin("peter") )
 
         .when( Overview.isAccessed() )
         .and( VacationHours.isSetTo(20).forUser("peter").onDate("2022-09-19") )
@@ -17,7 +17,7 @@ Scenario.of("Modify Vacation Hours", new MyContext())
         .and( Event.exists().who("peter").what("SetVacationHours").user("peter").rosterPeriod("2022-09-19").detailSubstring("hours=20") );
 ```
 
-What you see here is the GiWTh equivalent of a Cucumber test which normally would be written in Gherkin. 
+What you see here is the Giwth equivalent of a Cucumber test which normally would be written in Gherkin. 
 And as with that framework it consists of two parts. First the Given/When/Then frame
 
 ```java
@@ -47,12 +47,11 @@ A short explanation of the reasons behind Giwth can be found in this [blog](http
 
 ## Step definitions
 The scenario requires implementations of specific interfaces, Given, When, Then, for each of the three phases.
-How you, the user of GiWTh, create these implementations is up to you.
+How these implementations are created, is up to you.
 All three interfaces even are identical, they all only have one method `Context run(Context context)`.
 
-But as explained in the [blog](https://www.tbee.org/2023/02/19/given-when-then/), there is a suggestion; use builders.
-In a normal builder you have a `newBuilder` method, then some parameters are provided and at the end there is a `build`.
-The build in this case is a class implementing any of the three interfaces.
+But as explained in the [blog](https://www.tbee.org/2023/02/19/given-when-then/), there is a suggestion: use builders.
+Normal builders have a `newBuilder` method, then some parameters are provided in a fluent API style, and at the end there is a `build` method.
 Again an example says more than a 1000 words:
 
 ```java
@@ -60,9 +59,9 @@ User.of("peter").isLoggedin(); // returns a Given
 User.of("peter").logsIn(); // returns a When
 User.of("peter").shouldBeLoggedin(); // returns a Then
 ```
-The `of` is the `newBuilder`, and the `isLoggedin` is the `build`.
+In these examples the `of` is the `newBuilder`, and for example the `isLoggedin` is the `build`.
 
-And the only way this step builder can be used in a scenario is this:
+And the only way this User step builder can be used in a scenario is this:
 ```java
 Scenario.of(...)
         .given( User.of("gwen").isLoggedin() )
@@ -72,9 +71,10 @@ Scenario.of(...)
 
 Unlike Cucumber you cannot (accidentally) mix the step definitions, they are strongly typed.
 
-However, in real world use it turns out this pattern feels a bit unnatural. 
-The builder pattern is okay, but the `newBuilder`-`build` is difficult to get right.
-But because each Given/WhenThen interface contains a single `run` method, that can naturally become the `build` method.
+However, in real world use with complexer steps it turns out this builder pattern feels a bit unnatural. 
+The builder pattern on its own is okay, but the `newBuilder`-`build` is difficult to get right.
+If you merge the structure of the builder with the Giwth interfaces, it becomes easier:
+since each Given/WhenThen interface only contains a single `run` method, that can naturally become the `build` method.
 The static method on the class simply always returns an implementation of Given/When/Then, which optionally can be a custom class with setters for the parameters. 
 
 So for example:
@@ -85,7 +85,7 @@ VacationHours.isSetTo(20).forUser("peter").onDate("2022-09-19")
 Is implemented like:
 ```java
 class VacationHours {
-    public isSetTo(int hours) {
+    public static isSetTo(int hours) {
         return new IsSetTo(hours);
     }
 
@@ -114,6 +114,8 @@ class VacationHours {
 }
 ```
 
+This is a simpel and straight forward way of implementing steps.
+
 For simple steps an extra class is not needed:
 ```java
 class VacationHours {
@@ -140,7 +142,7 @@ class User {
     public Given<MyContext> isLoggedIn(String username) {
         return new Given<MyContext>() {
             @Override
-            public MyContext run(MyContext myContext) {  // Is made available here
+            public void run(MyContext myContext) {  // Is made available here
                 ...
             }
         };
@@ -279,9 +281,9 @@ However, the 'and' and 'but' following a given, when or then only accept the sam
 
 ```java
 Scenario.of(...)
-        .given( User.of("gwen").isLoggedin() ) // a Given sequence is started
-        .and( User.of("peter").logsIn() ) // ERROR, because 'and' expects a Given, not a When
-        .but( User.of("peter").shouldBeLoggedin() ) // ERROR, because 'but' expects a Given, not a Then
+        .given( User.isLoggedin("gwen") ) // a Given sequence is started
+        .and( User.logsIn("peter") ) // ERROR, because 'and' expects a Given, not a When
+        .but( User.shouldBeLoggedin("peter") ) // ERROR, because 'but' expects a Given, not a Then
         .when( ... ) // a When sequence is started
         ...
 ```
@@ -300,7 +302,7 @@ Just include a dependency in your project. For the latest version see [Maven cen
 <dependency>
     <groupId>org.tbee.giwth</groupId>
     <artifactId>giwth</artifactId>
-    <version>1.2.0</version>
+    <version>2.0.0</version>
     <scope>test</scope>
 </dependency>
 ```

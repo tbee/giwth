@@ -3,7 +3,7 @@ package org.tbee.giwth;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.tbee.giwth.steps.SomeStep;
+import org.tbee.giwth.steps.CountingStep;
 import org.tbee.giwth.steps.StepContext;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -13,9 +13,9 @@ public class BackgroundTests {
     @BeforeEach
     public void beforeEach() {
         Scenario.background(new StepContext())
-                .given(SomeStep.of().createGiven())
-                .when(SomeStep.of().createWhen())
-                .then(SomeStep.of().createThen());
+                .given(CountingStep.of().createGiven())
+                .when(CountingStep.of().createWhen())
+                .then(CountingStep.of().createThen());
     }
 
     @Test
@@ -25,9 +25,9 @@ public class BackgroundTests {
         AtomicReference<StepContext> stepContextReference = new AtomicReference<StepContext>();
 
         Scenario.<StepContext>of("keepItSimpleTest")
-                .given(SomeStep.of().createGiven())
-                .when(SomeStep.of().createWhen())
-                .then(SomeStep.of().createThen())
+                .given(CountingStep.of().createGiven())
+                .when(CountingStep.of().createWhen())
+                .then(CountingStep.of().createThen())
                 // For getting hold of the context
                 .and(stepContextReference::set);
 

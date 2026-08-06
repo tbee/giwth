@@ -7,7 +7,6 @@ public class UserStep {
 
     static public Given<StepContext> exist(String table) {
         return stepContext -> {
-
             new TableProcessor<User>()
                     .onLineStart(i -> new User())
                     .onLineEnd((i, user) -> stepContext.users.add(user))

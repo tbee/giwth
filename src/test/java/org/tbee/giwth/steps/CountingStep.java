@@ -4,10 +4,10 @@ import org.tbee.giwth.Given;
 import org.tbee.giwth.Then;
 import org.tbee.giwth.When;
 
-public class SomeStep {
+public class CountingStep {
 
-    static public SomeStep of() {
-        return new SomeStep();
+    static public CountingStep of() {
+        return new CountingStep();
     }
 
     public Given<StepContext> createGiven() {
